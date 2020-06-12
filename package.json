@@ -7,8 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "package":"",
-    "build": "electron-packager . concurrency"
+    "pack":"build --dir",
+    "build" : "electron-packager . concurrency-app",
+    "dist":"build"
   },
+  "build": {
+    "appId":"com.marius.concurrency",
+    "productName":"Snowflake Concurrency Driver"
+  },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mariusndini/ConcurrencyUI-Node.git"
@@ -21,7 +28,6 @@
   "homepage": "https://github.com/mariusndini/ConcurrencyUI-Node#readme",
   "dependencies": {
     "asar": "^3.0.3",
-    "electron": "^9.0.3",
     "electron-packager": "^14.2.1",
     "jquery": "^3.5.1",
     "snowflake-sdk": "^1.5.2"
