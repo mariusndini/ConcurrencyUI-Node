@@ -1,0 +1,29 @@
+{
+  "name": "concurrencyui-node",
+  "version": "1.0.0",
+  "description": "Desktop Application for Concurrency testing in Snowflake",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "package":"",
+    "build": "electron-packager . concurrency"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariusndini/ConcurrencyUI-Node.git"
+  },
+  "author": "Marius Ndini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariusndini/ConcurrencyUI-Node/issues"
+  },
+  "homepage": "https://github.com/mariusndini/ConcurrencyUI-Node#readme",
+  "dependencies": {
+    "asar": "^3.0.3",
+    "electron": "^9.0.3",
+    "electron-packager": "^14.2.1",
+    "jquery": "^3.5.1",
+    "snowflake-sdk": "^1.5.2"
+  }
+}
