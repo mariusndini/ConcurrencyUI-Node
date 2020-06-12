@@ -166,13 +166,14 @@
             return Promise.all( promises );
 
         }).then(()=>{
-          $('#connected-status').html('Done 👍').removeClass('alert-success').addClass('alert-primary');
-
+          $('#connected-status').html('Done 👍').removeClass('alert-success').addClass('alert-primary');  
             return snow.runSQL(`ALTER WAREHOUSE ${config.warehouse} SUSPEND;`).then((data)=>{
                 console.log('DONE', new Date());
                 console.log(Date.now(), data);
-
+            }).catch((e)=>{
+              console.log(e.message);
             })
+            
         })
 
       }//end func
