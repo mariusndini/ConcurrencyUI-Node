@@ -150,7 +150,7 @@
           }
         }).then(()=>{
             var promises = [];
-            $('#runtime-counter').html('0 / 0');
+            $('#runtime-counter').html('0/' + $('#query-loop').val() );
 
             for(i=0; i < $('#query-loop').val(); i++){
                 var queryID = i % SQL.length;
