@@ -1,21 +1,20 @@
 {
   "name": "concurrencyui-node",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Desktop Application for Concurrency testing in Snowflake",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "package":"",
-    "pack":"build --dir",
-    "build" : "electron-packager . concurrency-app",
-    "dist":"build"
+    "package": "",
+    "pack": "build --dir",
+    "build": "electron-builder -m",
+    "dist": "build"
   },
   "build": {
-    "appId":"com.marius.concurrency",
-    "productName":"Snowflake Concurrency Driver"
+    "appId": "com.marius.concurrency",
+    "productName": "Snowflake Concurrency Driver"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mariusndini/ConcurrencyUI-Node.git"
@@ -27,8 +26,6 @@
   },
   "homepage": "https://github.com/mariusndini/ConcurrencyUI-Node#readme",
   "dependencies": {
-    "asar": "^3.0.3",
-    "electron-packager": "^14.2.1",
     "jquery": "^3.5.1",
     "snowflake-sdk": "^1.5.2"
   }

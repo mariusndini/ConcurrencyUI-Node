@@ -3,14 +3,25 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script>window.$ = window.jQuery = require('jquery');</script>
     <script src="../js/snowflakeWrapper.js"></script>
+    <script src="../js/rawHelper.js"></script>
+    <script src="../js/threadHelper.js"></script>
+  
     
   </head>
   <body>
-    <div class="jumbotron jumbotron-fluid" style='background-color:rgb(87, 193, 244)'>
-      <div class="container">
-        <img src="../logo.png" width=150 height=150 alt="logo" class="img-thumbnail">
-        <h1 class="display-7" style='color:white' >Concurrency Driver</h1>
-      </div>
+    <div class="jumbotron jumbotron-fluid" style='background-color:rgb(87, 193, 244);'>
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+              <img src="../logo.png" width=150 height=150 alt="logo" class="img-thumbnail">
+            </div>
+            <div class="col-md-3">
+              <br><br>
+              <h1 class="display-7" style='color:white' >Concurrency Driver</h1>
+            </div>
+        </div>
+    </div>
     </div>    
 
     <div class="container">
@@ -27,56 +38,164 @@
               <input type="text" class="form-control" id="snowflakeusername" placeholder="Username">
               <input type="password" class="form-control" id="snowflakepw" placeholder="Password">
             </div>
-            <div class="form-group">
-              <label>Database</label>
-              <input type="text" class="form-control" id="warehouse" placeholder="Warehouse">
-              <input type="text" class="form-control" id="database" placeholder="Database">
-              <input type="text" class="form-control" id="role" placeholder="Role">
-            </div>
-            <div class="form-group">
-              <label>Options</label>
-              <input type="number" class="form-control" id="query-loop" placeholder="Loop Times" value='10' min=0 max=150>
-              <small id="urlhelp" class="form-text text-muted">Number of Queries to Run</b></small>
-            </div>
             
             <div class="form-check">
               <input type="checkbox" class="form-check-input" id="cache-results">
               <label class="form-check-label" for="cache-results">Disable Resultset Cache</label>
             </div>
-            <div class="form-group">
-              <input type="text" class="form-control" id="query-tag" placeholder="Query-Tag">
-            </div>
-
           </div>
 
           <div class="col-md-9" id='query-list'>
-            <div class="container">
-              <div class="row">
-              <div class="col-md" id='query-list'>
-                <button onclick="addSQL()" class="btn btn-primary">Add SQL</button>
-              </div>
-              
-              <div class="col-md" id='query-list'>
-                <button onclick="login()" class="btn btn-success">Run Test 🤞</button>
+
+            <!-- NAV MENU -->
+            <ul class="nav nav-pills nav-fill">
+              <li class="nav-item">
+                <a class="nav-link active" href="#" id='raw-queries'>Raw Query</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" id='timed-queries-one'>Threaded Query</a>
+              </li>
+              <!--
+              <li class="nav-item">
+                <a class="nav-link" href="#">Threaded Results</a>
+              </li>
+              -->
+              <script>
+                function uiChanger(id){
+                  $('#raw-queries').removeClass('active');
+                  $('#timed-queries-one').removeClass('active');
+
+                  $('#' + id).addClass('active');
+                  $('#raw-queries-body').hide()
+                  $('#timed-queries-one-body').hide()
+
+                  $('#' + id + '-body').show();
+                }
+
+                $('#raw-queries').click(function() {uiChanger(this.id);});
+                $('#timed-queries-one').click(function() {uiChanger(this.id);});
+
+
+              </script>
+            </ul>
+            <br><br>
+            
+            <div class='row'>
+              <div class="col-md">
+                <label>Warehouse</label>
+                <input type="text" class="form-control" id="warehouse" placeholder="Warehouse">
               </div>
 
-              <div class="col-md" id='query-list'>
-                <div class="alert alert-secondary" role="alert" id='connected-status'>
-                  Not Connected
-                </div>
-              </div>
-              
-              <div class="col-md" id='query-list'>
-                <h5 id='runtime-counter' class="form-text text-muted">0/0</b></h5>
+              <div class="col-md">
+                <label>Database</label>
+                <input type="text" class="form-control" id="database" placeholder="Database">
               </div>
 
+              <div class="col-md">
+                <label>Role</label>
+                <input type="text" class="form-control" id="role" placeholder="Role">
+              </div>
+            </div>
+
+            <br>
+            
+            <div class='row'>
+              <div class="col-md-2">
+                <label>Runs</label>
+                <input type="number" class="form-control" id="query-loop" value='10' min=0 max=150>
+              </div>
+              <div class="col-md">
+                <label>Query Tag</label>
+                <input type="text" class="form-control" id="query-tag" placeholder="Query-Tag">
               </div>
             </div>
             
-            <div class="form-group">
-              <textarea class="form-control" rows="5">SELECT CURRENT_TIMESTAMP();</textarea>
+            <br><br>
+            <!-- RAW QUERIES BODY START -->
+            <div class="container" id='raw-queries-body'>
+              <div class="row">
+              
+                <div class="col-md" id='query-list'>
+                  <button onclick="addSQL()" class="btn btn-primary">Add SQL</button>
+                </div>
+                
+                <div class="col-md" id='query-list'>
+                  <button onclick="login()" class="btn btn-success">Run Test 🤞</button>
+                </div>
+
+                <div class="col-md" id='query-list'>
+                  <div class="alert alert-secondary" role="alert" id='connected-status'>
+                    Not Connected
+                  </div>
+                </div>
+                
+                <div class="col-md" id='query-list'>
+                  <h5 id='runtime-counter' class="form-text text-muted">0/0</b></h5>
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <textarea class="form-control" rows="5">SELECT CURRENT_TIMESTAMP();</textarea>
+              </div>
             </div>
+            
+
+            <!-- THREADED QUERIES BODY START -->
+            <div class="container" id='timed-queries-one-body' style='display:none'>
+              <!--
+              <div class='row'>
+                <div class="col-md-2">
+                  <label>Threads</label>
+                  <input type="number" class="form-control" id="query-thread" value='5' min=0 max=150>
+                </div>
+                <div class="col-md">
+                  <label>Query Tag</label>
+                  <input type="text" class="form-control" id="query-tag-thread" placeholder="Query-Tag">
+                </div>
+              </div>
+
+              <br>
+              -->
+              <div class="row">
+              <!--
+              <div class="col-md">
+                <button onclick="addFilter()" class="btn btn-primary">Add Filters</button>
+              </div>
+              -->
+              <div class="col-md">
+                <button onclick="run_filtered_query()" id='run-filter-query-btn' class="btn btn-success">Run Test 🤞</button>
+              </div>
+
+              <div class="col-md">
+                <div class="alert alert-secondary" role="alert" id='connected-status-filter'>
+                  Not Connected
+                </div>
+              </div>
+
+              </div>
+
+              <div class="form-group">
+                <textarea class="form-control" rows="5"  id='query-filtered'>select DATE_TRUNC("MONTH", END_TIME) as MONTH, SUM(CREDITS_USED)
+from snowflake.account_usage.warehouse_metering_history
+where month='#'
+GROUP BY 1
+                  </textarea>
+              </div>
+
+              <div class="form-group">
+                <textarea class="form-control" rows="5" id='query-filters'>2019-11-01 00:00:00.000 -0700|2020-07-01 00:00:00.000 -0700|2020-03-01 00:00:00.000 -0800
+                </textarea>
+              </div>
+            </div>
+
+
+
+
+
           </div>
+
+          
 
           <script>
             $('#snowflakeurl').val(localStorage.getItem("account") || '');
@@ -86,106 +205,11 @@
             $('#warehouse').val(localStorage.getItem("warehouse") || '');
             $('#role').val(localStorage.getItem("role") || '');
             $('#database').val(localStorage.getItem("database") || '');
-
           </script>
-
-
 
         </div>
     </div>
 
-    <script>
-      var counter = 1;
-
-      function login(){
-        const snow = require('../js/snowflakeWrapper.js');
-
-        var url = $('#snowflakeurl').val();
-        var pw = $('#snowflakepw').val();
-        var name = $('#snowflakeusername').val();
-        
-        var wh = $('#warehouse').val();
-        var role = $('#role').val();
-        var db = $('#database').val();
-        
-        localStorage.setItem("account", url)
-        localStorage.setItem("username", name)
-        localStorage.setItem("password", pw)
-        localStorage.setItem("warehouse", wh)
-        localStorage.setItem("role", role)
-        localStorage.setItem("database", db)
-
-        var config = {
-            "account": url,
-            "username": name,
-            "password": pw,
-            "warehouse": wh,
-            "role": role,
-            "database":db,
-        }
-
-        var quiries = $('textarea');
-        var SQL = []
-
-        for(i=0; i< quiries.length; i++){
-          SQL.push( quiries[i].value );
-        }
-
-        var resultsetcache = $('#cache-results').is(":checked");
-
-        snow.connect(config).then(( con )=>{
-          console.log('CONNECTED', new Date());
-          $('#connected-status').html('Connected').removeClass('alert-secondary').addClass('alert-success');
-
-          return snow.runSQL( " ALTER SESSION SET QUERY_TAG = " + ($('#query-tag').val() || 'Concurrency') ).then((data)=>{
-              console.log(Date.now(), data);
-          })
-        }).then(()=>{
-          if(resultsetcache){
-            return snow.runSQL( " ALTER SESSION SET USE_CACHED_RESULT = FALSE; ").then((data)=>{
-              console.log(Date.now(), data);
-            })
-          }else{
-            return;
-          }
-        }).then(()=>{
-            var promises = [];
-            $('#runtime-counter').html('0/' + $('#query-loop').val() );
-
-            for(i=0; i < $('#query-loop').val(); i++){
-                var queryID = i % SQL.length;
-                if(SQL [queryID] != ''){
-                  promises.push(snow.runSQL( SQL [queryID] ).then((data)=>{
-                      console.log(Date.now(), data);
-                      $('#runtime-counter').html( (parseInt(($('#runtime-counter').html()).split('/')[0]) + 1) +' / '+ $('#query-loop').val() );
-                      console.log();
-                  }))   
-                }
-            }
-            //console.log('RUNQUERY', new Date());
-            return Promise.all( promises );
-
-        }).then(()=>{
-          $('#connected-status').html('Done 👍').removeClass('alert-success').addClass('alert-primary');  
-            return snow.runSQL(`ALTER WAREHOUSE ${config.warehouse} SUSPEND;`).then((data)=>{
-                console.log('DONE', new Date());
-                console.log(Date.now(), data);
-            }).catch((e)=>{
-              console.log(e.message);
-            })
-            
-        })
-
-      }//end func
-
-
-      function addSQL(){
-        console.log('adding');
-        counter = counter + 1;
-        $('#query-list').append( '<textarea class="form-control" rows="5" placeholder="Enter SQL Please"></textarea>' );
-      }
-
-    </script>
 
   </body>
 </html>
