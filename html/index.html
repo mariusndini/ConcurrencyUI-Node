@@ -19,6 +19,7 @@
             <div class="col-md-3">
               <br><br>
               <h1 class="display-7" style='color:white' >Concurrency Driver</h1>
+              <h4 style='color:white' >Pre - Sales Demo Application</h4>
             </div>
         </div>
     </div>
@@ -100,6 +101,36 @@
             <br>
             
             <div class='row'>
+              <div class="col-md-3">
+                <label>WH Size</label>
+                <select class="form-control" id="whsize">
+                  <option>XSMALL</option>
+                  <option>SMALL</option>
+                  <option selected>MEDIUM</option>
+                  <option>LARGE</option>
+                  <option>XLARGE</option>
+                  <option>XXLARGE</option>
+                  <option>XXXLARGE</option>
+                  <option>X4LARGE</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label>MCW</label>
+                <select class="form-control" id="mcwsize">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option selected>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                </select>
+              </div>
+              
+
               <div class="col-md-2">
                 <label>Runs</label>
                 <input type="number" class="form-control" id="query-loop" value='10' min=0 max=150>
@@ -136,6 +167,8 @@
               </div>
 
               <div class="form-group">
+                <label><b>SQL Statment</b></label>
+                <label>Enter query to run below. Add quiries as necessary. Quiries will run in sequence and repeat until total number of <b>Runs</b> is reached.</label>
                 <textarea class="form-control" rows="5">SELECT CURRENT_TIMESTAMP();</textarea>
               </div>
             </div>
@@ -176,6 +209,8 @@
               </div>
 
               <div class="form-group">
+                <label><b>SQL Statment</b></label>
+                <label>Enter SQL statements below. For dynamic filters you use <b>#</b> to be replaced with the flters defined.</label>
                 <textarea class="form-control" rows="5"  id='query-filtered'>select DATE_TRUNC("MONTH", END_TIME) as MONTH, SUM(CREDITS_USED)
 from snowflake.account_usage.warehouse_metering_history
 where month='#'
@@ -184,6 +219,8 @@ GROUP BY 1
               </div>
 
               <div class="form-group">
+                <label><b>Filters</b></label>
+                <label>Copy and paste your filters below. Delimit filters with pipe <b>|</b>. Quiries will run with a filter & upon completion the next query filter will run.</label>
                 <textarea class="form-control" rows="5" id='query-filters'>2019-11-01 00:00:00.000 -0700|2020-07-01 00:00:00.000 -0700|2020-03-01 00:00:00.000 -0800
                 </textarea>
               </div>

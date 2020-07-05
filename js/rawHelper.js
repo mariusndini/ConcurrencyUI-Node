@@ -52,6 +52,11 @@ function login(){
       return;
     }
   }).then(()=>{
+    return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = 1 MAX_CLUSTER_COUNT = "+$('#mcwsize').val()+";").then((data)=>{
+      console.log(Date.now(), data);
+    })
+
+  }).then(()=>{
       var promises = [];
       $('#runtime-counter').html('0/' + $('#query-loop').val() );
 
@@ -81,15 +86,6 @@ function login(){
 }//end func
 
 function addSQL(){
-    counter = counter + 1;
-    $('#raw-queries-body').append( '<textarea class="form-control" rows="5" placeholder="Enter SQL Please"></textarea>' );
-  }
-
-  function addFilter(){
-    $('#timed-queries-one-body').append( '<textarea class="form-control" rows="5" placeholder="Enter Delimitted Filters Please"></textarea>' );
-  }
-
-  function run_filtered_query(){
-    console.log($('#query-filtered').val());
-    console.log($('#query-filters').val());
-  }
+  counter = counter + 1;
+  $('#raw-queries-body').append( '<textarea class="form-control" rows="5" placeholder="Enter SQL Please"></textarea>' );
+}

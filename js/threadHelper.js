@@ -1,4 +1,4 @@
-var quyeryCounter = 1;
+var quyeryCounter = 0;
 var stopTest = false;
 var timer;
 
@@ -13,6 +13,7 @@ function run_filtered_query(){
   }
 
   stopTest = false;
+  quyeryCounter = 0;
   const snow = require('../js/snowflakeWrapper.js');
 
   var url = $('#snowflakeurl').val();
@@ -48,7 +49,7 @@ function run_filtered_query(){
 
   $('#run-filter-query-btn').removeClass('btn-success')
     .addClass('btn-danger')
-    .html('Stop Test');
+    .html('Stop Test⏱');
 
   snow.connect(config).then(( con )=>{
     console.log('CONNECTED', new Date());
@@ -65,6 +66,11 @@ function run_filtered_query(){
     }else{
       return;
     }
+  }).then(()=>{
+      return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = 1 MAX_CLUSTER_COUNT = "+$('#mcwsize').val()+";").then((data)=>{
+        console.log(Date.now(), data);
+      })
+
   }).then(()=>{
     var query = SQL[0];
     var filter = SQL[1].split('|');
@@ -84,7 +90,7 @@ function run_filtered_query(){
     console.log( SQLS );
     var start = Date.now();
     timer = setInterval(()=>{
-      $('#connected-status-filter').html( msToTime(Date.now() - start) +' - ' + quyeryCounter)
+      $('#connected-status-filter').html('Runtime: ' + msToTime(Date.now() - start) +' - Query Count: ' + quyeryCounter)
     }, 1000);
 
     //recursive function to start a thread of quiries
@@ -123,6 +129,7 @@ function msToTime(ms) {
   const hours = Math.floor((ms  / 1000 / 3600 ) % 24)
 
   const humanized = [
+    hours.toString().padStart(2,0),
     minutes.toString().padStart(2,0),
     seconds.toString().padStart(2,0),
   ].join(':');
