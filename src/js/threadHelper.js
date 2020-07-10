@@ -82,10 +82,15 @@ function run_filtered_query(){
     }
     
     var SQLS = [];
-    for(i=0; i < filter.length; i++){
-      var q = query.substring(0, indices[0]) + filter[i].trim() + query.substring(indices[0]+1, query.length);
-      SQLS.push(q);
+    if(indices.length > 0){
+      for(i=0; i < filter.length; i++){
+        var q = query.substring(0, indices[0]) + filter[i].trim() + query.substring(indices[0]+1, query.length);
+        SQLS.push(q);
+      }
+    }else{
+      SQLS.push(query);
     }
+    
     
     console.log( SQLS );
     var start = Date.now();
