@@ -67,7 +67,7 @@ function run_filtered_query(){
       return;
     }
   }).then(()=>{
-      return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = 1 MAX_CLUSTER_COUNT = "+$('#mcwsize').val()+";").then((data)=>{
+      return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = "+$('#mcwsize').val()+" MAX_CLUSTER_COUNT = "+$('#mcwsize').val()+";").then((data)=>{
         console.log(Date.now(), data);
       })
 

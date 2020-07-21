@@ -35,6 +35,7 @@ function login(){
   }
 
   var resultsetcache = $('#cache-results').is(":checked");
+  var start = new Date();
 
   snow.connect(config).then(( con )=>{
     console.log('CONNECTED', new Date());
@@ -52,9 +53,9 @@ function login(){
       return;
     }
   }).then(()=>{
-    return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = 1 MAX_CLUSTER_COUNT = "+$('#mcwsize').val()+";").then((data)=>{
-      console.log(Date.now(), data);
-    })
+      return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = "+$('#mcwsize').val()+" MAX_CLUSTER_COUNT = "+$('#mcwsize').val()+";").then((data)=>{
+        console.log(Date.now(), data);
+      })
 
   }).then(()=>{
       var promises = [];
@@ -73,7 +74,7 @@ function login(){
       return Promise.all( promises );
 
   }).then(()=>{
-    $('#connected-status').html('Done 👍').removeClass('alert-success').addClass('alert-primary');  
+    $('#connected-status').html('Done 👍' + msToTime(new Date() - start)).removeClass('alert-success').addClass('alert-primary');  
       return snow.runSQL(`ALTER WAREHOUSE ${config.warehouse} SUSPEND;`).then((data)=>{
           console.log('DONE', new Date());
           console.log(Date.now(), data);
