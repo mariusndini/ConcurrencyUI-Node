@@ -53,7 +53,7 @@ function login(){
       return;
     }
   }).then(()=>{
-      return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = "+$('#mcwsize').val()+" MAX_CLUSTER_COUNT = "+$('#mcwsize').val()+";").then((data)=>{
+      return snow.runSQL( "ALTER WAREHOUSE IF EXISTS "+$('#warehouse').val()+" SET WAREHOUSE_SIZE = "+$('#whsize').val()+" MIN_CLUSTER_COUNT = "+$('#mcwsizemin').val()+" MAX_CLUSTER_COUNT = "+$('#mcwsizemax').val()+";").then((data)=>{
         console.log(Date.now(), data);
       })
 
@@ -68,8 +68,9 @@ function login(){
                 console.log(Date.now(), data);
                 $('#runtime-counter').html( (parseInt(($('#runtime-counter').html()).split('/')[0]) + 1) +' / '+ $('#query-loop').val() );
                 console.log();
-            }))   
-          }
+            }))
+            
+          }//end if
       }
       return Promise.all( promises );
 
