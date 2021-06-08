@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/mariusndini/ConcurrencyUI-Node#readme",
   "dependencies": {
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "snowflake-sdk": "^1.5.2"
   }
 }

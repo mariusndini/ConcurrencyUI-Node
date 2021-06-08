@@ -8,7 +8,9 @@ function createWindow () {
     height: 800,
     title:'Snowflake Concurrency',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
     }
   })
   win.maximize();
@@ -23,6 +25,8 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+
 
 
 
