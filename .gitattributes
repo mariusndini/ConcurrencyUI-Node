@@ -1,1 +1,2 @@
 *.dmg filter=lfs diff=lfs merge=lfs -text
+/Users/mndini/Documents/GitHub/ConcurrencyUI-Node/APP-DOWNLOAD/Snowflake[[:space:]]Concurrency[[:space:]]Driver-2.0.0.dmg !text !filter !merge !diff
